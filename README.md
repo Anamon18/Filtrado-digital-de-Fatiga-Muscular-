@@ -16,6 +16,8 @@ El trabajo se divide en:
    + Numpy.
    + Pandas.
    + Matplotlib.
+   + Butter.
+   + Filtfilt.
 5. Se utiliza **Jupyter NoteBook** para dividir el código en partes y trabajar en ellas sin importar el orden: escribir, probar funciones, cargar un archivo en la memoria y procesar el contenido. Con lenguaje de **Python**
 ## 1. Adquisición de datos 
 Se configura una tarea para el modulo DAQ para que reciba los datos en una frecuencia de muestreo de 2000 Hz 
@@ -70,25 +72,40 @@ with open(filename, mode='w', newline='') as file:
                         writer.writerow([tiempo, emg_data[j]])
 ```
 >Esta parte del código permite almacenar los datos de 60s y guardarlos en un archivo **.csv** para luego poder realizar un DataFrame y visualizar el voltaje y el tiempo para graficar y poder aplicar el filtro digital.
-### 1.2  Importar datos.
+## 2  Filtrado de señal:
+
+Inicialmente se extraen los datos del archivo .csv y se guardan en la variable *data*, para luego separarlo por columnas en *tiempo* y *voltaje*
+
 ```python
-import pandas as pd
-import csv
-
-# Cargar datos y mostrar en un DataFrame
+#  Cargar los datos desde el archivo CSV
 filename = "emg_data.csv"
-df = pd.read_csv(filename)
-print(df.head(60))
-
-plt.figure(figsize=(17, 10))  # Tamaño del gráfico
-plt.plot(df["Tiempo (s)"], df["Voltaje (V)"], label="Fatiga muscular", color="pink")
-plt.title("Fatiga Muscular", fontsize=16)
-plt.xlabel("Tiempo (s)", fontsize=14)
-plt.ylabel("Amplitud (mV)", fontsize=14)
-plt.grid(True, linestyle="--", alpha=0.7)
-plt.legend(fontsize=12)
-plt.savefig("Fatiga.png", dpi=300, bbox_inches='tight')
-plt.show()
+data = pd.read_csv(filename)
+tiempos = data['Tiempo (s)'].values
+voltajes = data['Voltaje (V)'].values
 ```
-![image](https://github.com/user-attachments/assets/09dac390-3658-4668-92ff-8c5effd16487)
+Se determinan los parametros para el filtro pasabajas  y pasa altas 
+```python
+fs = 2000  # Frecuencia de muestreo en Hz (asegúrate de que sea la misma que usaste para adquirir la señal)
+bajaf = 20  # Frecuencia de corte para el filtro pasa altas (en Hz)
+altaf = 450  # Frecuencia de corte para el filtro pasa bajas (en Hz)
+```
+Luego se determina los parametros para la función del filtro butterworth y poder obtener la señla filtrada como se observa en la figura.
+```python
+# Función para diseñar un filtro Butterworth
+def butter_filter(fcorte, fs, order=4, filter_type='low'):
+    nyquist = 0.5 * fs
+    normal_fcorte = fcorte / nyquist
+    b, a = butter(order, normal_fcorte, btype=filter_type, analog=False)
+    return b, a
+
+# Filtro Pasa Altas
+b_alto, a_alto = butter_filter(bajaf, fs, order=4, filter_type='high')
+pasa_altas = filtfilt(b_alto, a_alto, voltajes)
+
+# Filtro Pasa Bajas
+b_baja, a_baja = butter_filter(altaf, fs, order=4, filter_type='low')
+filtrada = filtfilt(b_baja, a_baja, pasa_altas)
+
+
+```
 <br><em>Figura 1: Fatiga muscular del bicep sin filtrar. mV vs t(s) .</em></p>
