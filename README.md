@@ -126,7 +126,7 @@ filtrada_df.to_csv(nombre_archivo_filtrado, index=False)
 
 print(f"Archivo guardado como: {nombre_archivo_filtrado}")
 ```
-## 2  Aventanamiento de la señal filtrada
+## 3  Aventanamiento de la señal filtrada
 
 Una vez obtenida la señal EMG filtrada, aplicamos una ventana para suavizar los bordes del fragmento de señal y evitar distorsiones en el análisis espectral. Entre las ventanas más comunes para este tipo de análisis se encuentran las ventanas *Hanning* y *Hamming*. Decidimos utilizar la ventana *Hamming*, ya que, aunque en la sección #2 se filtró la señal, aún presentaba bastante ruido posiblemente producto de músculos cercanos o interferencias eléctricas. La ventana de *Hamming* ofrece una mejor atenuación de los lóbulos laterales en comparación con la de *Hanning*, lo que permite reducir el ruido fuera de banda y mejorar la precisión del análisis en frecuencia, especialmente al aplicar la transformada rápida de Fourier (FFT).
 Se deben crear tantas ventanas como número de contracciones se hicieron hasta llegar al fallo muscular, con el objetivo de comparar la señal y su espectro antes de la fatiga y durante la fatiga, lo que correspondería a la primera y última ventana. Durante los 60 segundos se contabilizaron 30 contracciones.
@@ -196,6 +196,8 @@ Luego de observar el comportamiento de la señal EMG filtrada y compararla con l
 
 ![image](https://github.com/user-attachments/assets/9648663e-3849-4ddc-93fb-3929be700fac)
 <br><em>Figura 4: Señal aventanada Hamming. mV vs t(s) .</em></p>
+
+## 4 Análisis espectral
 
 Ahora, con la ayuda de la transformada de Fourier FFT, graficamos el espectro de frecuencias para las ventanas: 
 ```python
