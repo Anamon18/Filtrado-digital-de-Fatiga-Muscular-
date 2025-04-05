@@ -73,6 +73,12 @@ with open(filename, mode='w', newline='') as file:
                         writer.writerow([tiempo, emg_data[j]])
 ```
 Esta parte del código permite almacenar los datos de 60s tomados en tiempo real y guardarlos en un archivo **.csv** para luego poder realizar un DataFrame y visualizar el voltaje y el tiempo para graficar y poder aplicar el filtro digital.
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/c61496ed-73e0-4d1e-b836-6da0b15439e5" 
+         alt="Convolucion Ana" width="500">
+    <br><em>Figura 1: Convolución 1 entre el sistema <strong>h(n)</strong> y la señal <strong>X[n]</strong> con su respectiva gráfica a mano.</em>
+</p>
+
 
 ## 2  Filtrado de señal:
 
@@ -91,7 +97,7 @@ fs = 2000  # Frecuencia de muestreo en Hz (asegúrate de que sea la misma que us
 bajaf = 20  # Frecuencia de corte para el filtro pasa altas (en Hz)
 altaf = 450  # Frecuencia de corte para el filtro pasa bajas (en Hz)
 ```
-Luego se determina los parametros para la función del filtro butterworth y poder obtener la señla filtrada como se observa en la figura.
+Luego se determina los parametros para la función del filtro butterworth y poder obtener la señal filtrada como se observa en la figura.
 ```python
 # Función para diseñar un filtro Butterworth
 def butter_filter(fcorte, fs, order=4, filter_type='low'):
@@ -110,6 +116,12 @@ filtrada = filtfilt(b_baja, a_baja, pasa_altas)
 
 
 ```
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/c61496ed-73e0-4d1e-b836-6da0b15439e5" 
+         alt="Convolucion Ana" width="500">
+    <br><em>Figura 1: Convolución 1 entre el sistema <strong>h(n)</strong> y la señal <strong>X[n]</strong> con su respectiva gráfica a mano.</em>
+</p>
+
 <br><em>Figura 1: Fatiga muscular del bicep sin filtrar. mV vs t(s) .</em></p>
 
 Luego se guarda la señal filtrada en un archivo csv para proceder con el aventanamiento y el análisis espectral
