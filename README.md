@@ -283,7 +283,7 @@ Frecuencia mediana de las últimas ventanas:
 | 23     | 62.50                  |
 | 24     | 31.25                  |
 
-Se usaron las siguientes funciones para caucular los estadísticos y la frecuencia mediana respectivamente:
+Se usaron las siguientes funciones para calcular los estadísticos y la frecuencia mediana respectivamente:
 
 ``` python
 def calcular_estadisticos(signal):
@@ -308,5 +308,49 @@ df = pd.read_csv("emg_filtrada.csv")
 senal = df["Voltaje (V)"].values
 fs = 2000  # Frecuencia de muestreo en Hz
 ```
+Se implimentó una prueba de hipótesis para verificar si hay diferencias significativas entre la ventana de inicio y la ventana final de la señal.se realiza estre procedimeinto, ya que se plantea que a medida que progresa el tiempo y se acerca la fatiga muscular, se debe observar un cambio en las características espectrales de la señal, en particular una disminución en la frecuencia mediana de la señal EMG.Para comprobar esto, se dividió la señal en ventanas de tiempo y se compararon los datos de la primera y última ventana usando una prueba t de Student para dos muestras independientes.
 
-ESCRIBIR QUE SE VE LA DIFERENCIA DE LA FRECUENCIA MEDIA
+Para comprobarlo:
+
+Se dividió la señal en ventanas de tiempo.
+
+Se compararon los datos de la primera y última ventana usando una prueba t de Student para dos muestras independientes.
+``` python
+from scipy.stats import ttest_ind
+# -------------------------------
+# Prueba de hipótesis con t-test
+# -------------------------------
+
+# Selecciona la primera y última ventana como arreglos de datos
+datos_inicial = ventanas[0]
+datos_final = ventanas[-1]
+
+# Realiza el test t de muestras independientes
+t_stat, p_value = ttest_ind(datos_inicial, datos_final, equal_var=False)  # Welch's t-test
+
+# Muestra los resultados
+print(f"\nEstadístico t calculado: {t_stat:.4f}")
+print(f"Valor-p: {p_value:.4f}")
+
+# Interpretación simple
+alpha = 0.05
+if p_value < alpha:
+    print(" Hay evidencia significativa de una diferencia entre las ventanas (rechazamos H0).")
+else:
+    print(" No hay evidencia significativa de diferencia por lo que no se rechaza la hipotesis nula (H0).")
+
+```
+El valor-p obtenido en la prueba t de muestras independientes fue de 0.8627, que es considerablemente mayor al nivel de significancia típico de 0.05.
+Por lo tanto, no se rechaza la hipótesis nula. Esto indica que no existe evidencia estadísticamente significativa de diferencia entre los datos de la primera ventana y los de la última ventana analizados.
+Esto indica que se puede concluir que no hubo un cambio relevante en las mediciones durante el experimento.
+Por otra parte, aunque en la hipótesis inicial se esperaba observar una disminución de la frecuencia media como indicativo de fatiga, los resultados del test sugieren que el espectro de la señal se mantuvo relativamente constante entre las ventanas analizadas.
+
+
+
+
+
+
+
+
+
+
