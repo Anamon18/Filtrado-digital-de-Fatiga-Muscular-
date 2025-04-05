@@ -74,9 +74,9 @@ with open(filename, mode='w', newline='') as file:
 ```
 Esta parte del código permite almacenar los datos de 60s tomados en tiempo real y guardarlos en un archivo **.csv** para luego poder realizar un DataFrame y visualizar el voltaje y el tiempo para graficar y poder aplicar el filtro digital.
 <p align="center">
-    <img src="https://github.com/user-attachments/assets/c61496ed-73e0-4d1e-b836-6da0b15439e5" 
-         alt="Convolucion Ana" width="500">
-    <br><em>Figura 1: Convolución 1 entre el sistema <strong>h(n)</strong> y la señal <strong>X[n]</strong> con su respectiva gráfica a mano.</em>
+    <img src="original.png" 
+         alt="Grafica original" width="1100">
+    <br><em>Figura 1: Grafica original de la señal EMG.</em>
 </p>
 
 
@@ -117,9 +117,9 @@ filtrada = filtfilt(b_baja, a_baja, pasa_altas)
 
 ```
 <p align="center">
-    <img src="https://github.com/user-attachments/assets/c61496ed-73e0-4d1e-b836-6da0b15439e5" 
-         alt="Convolucion Ana" width="500">
-    <br><em>Figura 1: Convolución 1 entre el sistema <strong>h(n)</strong> y la señal <strong>X[n]</strong> con su respectiva gráfica a mano.</em>
+    <img src="filtrada.png" 
+         alt="Señal filtrada" width="1100">
+    <br><em>Figura 2: Señal filtrada de EMG.</em>
 </p>
 
 <br><em>Figura 1: Fatiga muscular del bicep sin filtrar. mV vs t(s) .</em></p>
@@ -193,6 +193,7 @@ plt.show()
 Se carga la señal EMG filtrada previamente guardada desde el archivo CSV y se detectan los picos que representan posibles contracciones musculares, esto con el objetivo de identificar la posición de cada contracción, utilizando un umbral basado en la media y desviación estándar de la señal. A continuación, se define una ventana de Hamming de 200 milisegundos de duración, la cual se aplica a segmentos de la señal centrados en cada pico detectado, esto permite resaltar las contracciones de forma más clara y reducir el efecto del ruido. Finalmente, se grafica sobre la señal filtrada, la señal con los segmentos aventanados para visualizar cómo se aíslan las contracciones musculares mediante el uso de ventanas.
 
 ![image](https://github.com/user-attachments/assets/1363ae28-3c01-407b-aea9-22f14fd63e6a)
+
 <br><em>Figura 3: Señal aventanada Hamming superpuesta a la señal filtrada EMG. mV vs t(s) .</em></p>
 
 Teóricamente deberíamos tener 30 ventanas, una por cada contracción esperada. Sin embargo, al usar la función find_peaks, el programa detectó lo siguiente:
