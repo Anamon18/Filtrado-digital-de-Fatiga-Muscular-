@@ -309,12 +309,6 @@ senal = df["Voltaje (V)"].values
 fs = 2000  # Frecuencia de muestreo en Hz
 ```
 Se implimentó una prueba de hipótesis para verificar si hay diferencias significativas entre la ventana de inicio y la ventana final de la señal.se realiza estre procedimeinto, ya que se plantea que a medida que progresa el tiempo y se acerca la fatiga muscular, se debe observar un cambio en las características espectrales de la señal, en particular una disminución en la frecuencia mediana de la señal EMG.Para comprobar esto, se dividió la señal en ventanas de tiempo y se compararon los datos de la primera y última ventana usando una prueba t de Student para dos muestras independientes.
-
-Para comprobarlo:
-
-Se dividió la señal en ventanas de tiempo.
-
-Se compararon los datos de la primera y última ventana usando una prueba t de Student para dos muestras independientes.
 ``` python
 from scipy.stats import ttest_ind
 # -------------------------------
@@ -342,7 +336,7 @@ else:
 ```
 El valor-p obtenido en la prueba t de muestras independientes fue de 0.8627, que es considerablemente mayor al nivel de significancia típico de 0.05.
 Por lo tanto, no se rechaza la hipótesis nula. Esto indica que no existe evidencia estadísticamente significativa de diferencia entre los datos de la primera ventana y los de la última ventana analizados.
-Esto indica que se puede concluir que no hubo un cambio relevante en las mediciones durante el experimento.
+Esto indica que no hubo un cambio relevante en las mediciones durante el experimento.
 Por otra parte, aunque en la hipótesis inicial se esperaba observar una disminución de la frecuencia media como indicativo de fatiga, los resultados del test sugieren que el espectro de la señal se mantuvo relativamente constante entre las ventanas analizadas.
 
 
